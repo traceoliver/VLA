@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虚拟联赛荣誉陈列室 | V.L.A</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Noto+Serif+SC:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --black: #050505;
+            --theme-color: var(--gold);
+        }
+
+        /* 基础重置 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; background-color: var(--black); color: #e5e5e5; font-family: 'Noto Serif SC', serif; overflow: hidden; }
+
+        .font-luxury { font-family: 'Cinzel', serif; }
+
+        /* 侧边栏 */
+        #sidebar {
+            position: fixed; left: 0; top: 0; height: 100%; width: 260px;
+            background: linear-gradient(180deg, #121212 0%, #050505 100%);
+            border-right: 1px solid rgba(212, 175, 55, 0.15);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+        .sidebar-closed #sidebar { transform: translateX(-100%); }
+
+        /* 主内容容器 */
+        #main-content {
+            height: 100vh;
+            margin-left: 260px;
+            transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-closed #main-content { margin-left: 0; }
+
+        /* 核心布局：全屏居中容器 */
+        .full-center-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative; /* 为内部绝对定位的气泡提供参考 */
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- 动画 --- */
+        @keyframes revealUp {
+            from { opacity: 0; transform: translateY(40px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        .animate-reveal { animation: revealUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* 联赛中心文字 */
+        .league-center-box {
+            text-align: center;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .league-center-box h1 {
+            font-size: 8vw; font-weight: 900; line-height: 1; opacity: 0.12;
+            letter-spacing: 0.1em; white-space: nowrap;
+        }
+        .league-center-box h2 {
+            font-size: 4vw; font-weight: 700; letter-spacing: 0.5em;
+            margin-top: -3vw; color: #fff; white-space: nowrap;
+        }
+
+        /* 气泡 */
+        .bubble {
+            position: absolute;
+            width: 120px; height: 120px;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--theme-color);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 10px; font-size: 0.85rem;
+            cursor: pointer; opacity: 0; z-index: 10;
+            box-shadow: 0 0 15px rgba(var(--theme-rgb), 0.2);
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+        }
+        .bubble:hover {
+            background: var(--theme-color); color: black;
+            box-shadow: 0 0 30px var(--theme-color);
+            transform: scale(1.1) !important; z-index: 50;
+        }
+
+        /* 辅助类 */
+        .theme-text { color: var(--theme-color); }
+        .theme-bg { background-color: var(--theme-color); }
+        .theme-border { border-color: var(--theme-color); }
+
+        /* 响应式调整 */
+        @media (max-width: 1024px) {
+            .bubble { width: 90px; height: 90px; font-size: 0.75rem; }
+            .league-center-box h1 { font-size: 12vw; }
+            .league-center-box h2 { font-size: 6vw; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside id="sidebar">
+        <div class="p-8">
+            <h2 class="font-luxury text-2xl text-[#d4af37] font-bold tracking-widest">V.L.A</h2>
+            <p class="text-[10px] text-zinc-500 tracking-[0.2em] uppercase font-sans">Virtual Archive</p>
+        </div>
+        <nav class="mt-4">
+            <a href="javascript:void(0)" onclick="renderHome()" class="block px-8 py-4 text-sm hover:bg-zinc-900 border-l-4 border-transparent hover:border-gold transition-all">首页馆</a>
+            <div id="league-menu"></div>
+        </nav>
+        <button onclick="toggleSidebar()" class="absolute bottom-8 left-8 text-zinc-500 hover:text-white text-xs flex items-center gap-2 font-luxury uppercase tracking-widest">
+            <span id="collapse-icon">←</span> <span id="collapse-text">Close</span>
+        </button>
+    </aside>
+
+    <!-- 开启按钮 -->
+    <button id="open-btn" onclick="toggleSidebar()" class="fixed left-6 top-6 z-50 bg-zinc-900 border border-gold/50 w-12 h-12 rounded-full hidden flex items-center justify-center shadow-lg">
+        <span class="text-[#d4af37] text-xl">🏛️</span>
+    </button>
+
+    <main id="main-content">
+        <div id="view-container" class="w-full h-full">
+            <!-- 动态载入 -->
+        </div>
+    </main>
+
+    <script>
+        let archiveData = null; // 用于存储从 JSON 加载的数据
+const container = document.getElementById('view-container');
+
+// 初始化函数：改为异步获取数据
+async function init() {
+    try {
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('无法加载数据文件');
+        archiveData = await response.json();
+
+        // 动态渲染侧边栏菜单
+        const menu = document.getElementById('league-menu');
+        archiveData.leagues.forEach(l => {
+            const a = document.createElement('a');
+            a.className = "block px-8 py-4 text-sm hover:bg-zinc-900/50 border-l-4 border-transparent hover:border-gold transition-all cursor-pointer";
+            a.innerHTML = `<span class="text-zinc-200">${l.name}</span><br><span class="text-[9px] text-zinc-600 font-luxury uppercase tracking-widest">${l.alias}</span>`;
+            a.onclick = () => renderLeague(l.id);
+            menu.appendChild(a);
+        });
+
+        renderHome();
+    } catch (error) {
+        console.error('初始化错误:', error);
+        container.innerHTML = `<div class="full-center-wrapper text-red-500">数据加载失败，请确保 data.json 格式正确且处于服务器环境运行。</div>`;
+    }
+}
+
+// 渲染首页
+function renderHome() {
+    document.documentElement.style.setProperty('--theme-color', '#d4af37');
+    container.innerHTML = `
+        <div class="full-center-wrapper">
+            <div class="animate-reveal text-center px-4">
+                <h3 class="font-luxury text-zinc-500 tracking-[0.5em] mb-4 text-xs md:text-sm">ESTABLISHED 2021</h3>
+                <h1 class="text-5xl md:text-8xl font-black mb-8 text-[#d4af37] font-luxury tracking-tighter">荣誉展览室</h1>
+                <div class="w-24 h-[1px] bg-[#d4af37] mx-auto mb-8"></div>
+                <p class="max-w-xl text-zinc-400 leading-relaxed font-light italic text-sm md:text-base">
+                    欢迎来到虚拟联赛历史档案馆。这里记录了 2021 年至 2035 年间，<br>五大联赛中每一分热血与荣耀的沉淀。
+                </p>
+            </div>
+        </div>
+    `;
+}
+
+// 渲染联赛页面
+function renderLeague(leagueId) {
+    const league = archiveData.leagues.find(l => l.id === leagueId);
+    const leagueTeams = archiveData.teamsData[leagueId] || [];
+
+    document.documentElement.style.setProperty('--theme-color', league.color);
+    document.documentElement.style.setProperty('--theme-rgb', league.rgb);
+
+    container.innerHTML = `
+        <div class="full-center-wrapper">
+            <div class="league-center-box animate-reveal">
+                <h1 class="font-luxury theme-text uppercase">${league.alias}</h1>
+                <h2 class="font-bold">${league.name}</h2>
+            </div>
+
+            ${leagueTeams.map((team, i) => {
+                const angle = (i / leagueTeams.length) * Math.PI * 2;
+                const radius = window.innerWidth > 1024 ? 300 : 160;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                const delay = 0.5 + (i * 0.1);
+
+                return `
+                    <div class="bubble font-luxury" 
+                         style="left: calc(50% + ${x}px - 60px); 
+                                top: calc(50% + ${y}px - 60px);
+                                animation: revealUp 0.8s ease-out ${delay}s forwards, 
+                                           float 4s ease-in-out ${delay + 0.8}s infinite"
+                         onclick="renderTeam('${leagueId}', ${team.id})">
+                        ${team.name}
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+// 渲染队伍详情页
+function renderTeam(leagueId, teamId) {
+    const team = archiveData.teamsData[leagueId].find(t => t.id === teamId);
+    
+    container.innerHTML = `
+        <div class="p-8 md:p-16 w-full h-full animate-reveal overflow-y-auto">
+            <button onclick="renderLeague('${leagueId}')" class="theme-text mb-8 flex items-center gap-2 font-bold uppercase tracking-widest text-sm">
+                ← Back to ${leagueId.toUpperCase()} Archive
+            </button>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
+                <div class="lg:col-span-1">
+                    <div class="aspect-square bg-zinc-900 border-2 theme-border flex items-center justify-center text-8xl mb-8 shadow-2xl">🛡️</div>
+                    <h1 class="text-4xl font-bold mb-2 font-luxury">${team.name}</h1>
+                    <p class="theme-text font-luxury tracking-widest text-sm italic uppercase">Registered ID: ${team.id}</p>
+                </div>
+                <div class="lg:col-span-2">
+                    <h2 class="text-2xl font-luxury theme-text border-b border-zinc-800 pb-4 mb-8 uppercase tracking-widest">Honours Archive</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${team.honours.length > 0 ? team.honours.map(h => `
+                            <div class="p-6 bg-zinc-900/50 border border-zinc-800 rounded-lg group hover:border-gold transition-colors">
+                                <div class="text-3xl mb-2">${h.type}</div>
+                                <div class="text-zinc-500 text-xs font-luxury">${h.year}</div>
+                                <div class="text-lg font-bold">${h.title}</div>
+                            </div>
+                        `).join('') : `
+                            <div class="col-span-2 p-20 border border-zinc-800 border-dashed text-zinc-600 text-center rounded-lg">
+                                <p class="italic uppercase tracking-widest text-xs">No records found in database for 2021-2035</p>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 侧边栏切换
+function toggleSidebar() {
+    document.body.classList.toggle('sidebar-closed');
+    const isClosed = document.body.classList.contains('sidebar-closed');
+    document.getElementById('collapse-icon').innerText = isClosed ? "→" : "←";
+    document.getElementById('collapse-text').innerText = isClosed ? "Open" : "Close";
+    document.getElementById('open-btn').classList.toggle('hidden', !isClosed);
+}
+
+// 启动
+init();
+    </script>
+</body>
+</html>
