@@ -108,6 +108,190 @@
             .league-center-box h1 { font-size: 12vw; }
             .league-center-box h2 { font-size: 6vw; }
         }
+
+        /* ===== 加油助威按钮（新增，不影响原有样式） ===== */
+        .cheer-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 32px;
+            gap: 12px;
+        }
+        .cheer-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 1.5px solid var(--theme-color);
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(var(--theme-rgb), 0.25);
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+            user-select: none;
+        }
+        .cheer-btn:hover {
+            background: var(--theme-color);
+            box-shadow: 0 0 30px var(--theme-color);
+            transform: scale(1.08);
+        }
+        .cheer-icon {
+            font-size: 2.2rem;
+            line-height: 1;
+        }
+        .cheer-divider {
+            width: 50%;
+            height: 1px;
+            background: var(--theme-color);
+            opacity: 0.6;
+            margin: 6px 0;
+        }
+        .cheer-count {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--theme-color);
+            line-height: 1;
+        }
+        .cheer-btn:hover .cheer-count,
+        .cheer-btn:hover .cheer-icon {
+            color: black;
+        }
+        .cheer-btn:hover .cheer-divider {
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 1;
+        }
+        .cheer-btn.voted {
+            border-color: #555;
+            box-shadow: none;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .cheer-btn.voted .cheer-count {
+            color: #888;
+        }
+        .cheer-btn.voted .cheer-divider {
+            background: #555;
+            opacity: 1;
+        }
+        .cheer-btn.voted:hover {
+            background: rgba(0, 0, 0, 0.6);
+            transform: none;
+        }
+        .cheer-hint {
+            font-size: 0.7rem;
+            color: #666;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            min-height: 1em;
+        }
+        @media (max-width: 1024px) {
+            .cheer-btn {
+                width: 100px;
+                height: 100px;
+            }
+            .cheer-icon {
+                font-size: 1.9rem;
+            }
+            .cheer-count {
+                font-size: 1.2rem;
+            }
+            .cheer-wrapper {
+                margin-top: 24px;
+            }
+        }
+        /* ===== 投票 Toast 提示（新增） ===== */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--theme-color);
+            color: #fff;
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            box-shadow: 0 0 24px rgba(var(--theme-rgb), 0.4);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        /* ===== Toast 样式结束 ===== */
+        /* ===== 加油按钮样式结束 ===== */
+        /* ===== 助威榜（新增） ===== */
+        .lb-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .lb-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .lb-rank {
+            width: 36px;
+            text-align: right;
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #555;
+            flex-shrink: 0;
+        }
+        .lb-rank.rank-1 { color: #d4af37; }
+        .lb-rank.rank-2 { color: #c0c0c0; }
+        .lb-rank.rank-3 { color: #cd7f32; }
+        .lb-name {
+            width: 140px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e5e5e5;
+            flex-shrink: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .lb-bar-wrap {
+            flex: 1;
+            height: 6px;
+            display: flex;
+            align-items: center;
+            min-width: 0;
+        }
+        .lb-bar {
+            height: 100%;
+            min-width: 8px;
+            border-radius: 3px;
+        }
+        .lb-votes {
+            width: 70px;
+            text-align: right;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #d4af37;
+            flex-shrink: 0;
+        }
+        @media (max-width: 640px) {
+            .lb-row { gap: 12px; padding: 12px 8px; }
+            .lb-rank { width: 28px; font-size: 1.1rem; }
+            .lb-name { width: 90px; font-size: 0.9rem; }
+            .lb-votes { width: 50px; font-size: 0.95rem; }
+        }
+        /* ===== 助威榜样式结束 ===== */
     </style>
 </head>
 <body>
@@ -120,6 +304,9 @@
         <nav class="mt-4">
             <a href="javascript:void(0)" onclick="renderHome()" class="block px-8 py-4 text-sm hover:bg-zinc-900 border-l-4 border-transparent hover:border-gold transition-all">首页馆</a>
             <div id="league-menu"></div>
+                        <a href="javascript:void(0)" onclick="renderLeaderboard()" class="block px-8 py-4 text-sm hover:bg-zinc-900/50 border-l-4 border-transparent hover:border-gold transition-all cursor-pointer">
+                <span class="text-zinc-200">助威榜</span><br><span class="text-[9px] text-zinc-600 font-luxury uppercase tracking-widest">CHEER RANKING</span>
+            </a>
         </nav>
         <button onclick="toggleSidebar()" class="absolute bottom-8 left-8 text-zinc-500 hover:text-white text-xs flex items-center gap-2 font-luxury uppercase tracking-widest">
             <span id="collapse-icon">←</span> <span id="collapse-text">Close</span>
@@ -137,7 +324,13 @@
         </div>
     </main>
 
-    <script>
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+        const supabase = createClient(
+        'https://nljoumpxrtusmjukbatq.supabase.co',
+        'sb_publishable_umNHPecNIEY7tyur9a_zzA_Hj5wi71h'
+        )
         let archiveData = null; // 用于存储从 JSON 加载的数据
 const container = document.getElementById('view-container');
 
@@ -175,7 +368,7 @@ function renderHome() {
                 <h1 class="text-5xl md:text-8xl font-black mb-8 text-[#d4af37] font-luxury tracking-tighter">荣誉展览室</h1>
                 <div class="w-24 h-[1px] bg-[#d4af37] mx-auto mb-8"></div>
                 <p class="max-w-xl text-zinc-400 leading-relaxed font-light italic text-sm md:text-base">
-                    欢迎来到虚拟联赛历史档案馆。这里记录了 2021 年至 2038 年间，<br>五大联赛中每一分热血与荣耀的沉淀。
+                    欢迎来到虚拟联赛历史档案馆。这里记录了 2021 年至 2035 年间，<br>五大联赛中每一分热血与荣耀的沉淀。
                 </p>
             </div>
         </div>
@@ -233,6 +426,14 @@ function renderTeam(leagueId, teamId) {
                     <div class="aspect-square bg-zinc-900 border-2 theme-border flex items-center justify-center text-8xl mb-8 shadow-2xl">🛡️</div>
                     <h1 class="text-4xl font-bold mb-2 font-luxury">${team.name}</h1>
                     <p class="theme-text font-luxury tracking-widest text-sm italic uppercase">Registered ID: ${team.id}</p>
+                                        <div class="cheer-wrapper">
+                        <div class="cheer-btn" id="cheer-btn-${team.id}" onclick="castVote('${team.id}', this)">
+                            <span class="cheer-icon">🔥</span>
+                            <span class="cheer-divider"></span>
+                            <span class="cheer-count" id="cheer-count-${team.id}">…</span>
+                        </div>
+                        <div class="cheer-hint" id="cheer-hint-${team.id}"></div>
+                    </div>
                 </div>
                 <div class="lg:col-span-2">
                     <h2 class="text-2xl font-luxury theme-text border-b border-zinc-800 pb-4 mb-8 uppercase tracking-widest">Honours Archive</h2>
@@ -253,6 +454,91 @@ function renderTeam(leagueId, teamId) {
             </div>
         </div>
     `;
+    loadVote(teamId);
+}
+
+// ===== 助威榜 =====
+async function renderLeaderboard() {
+    // 固定金色主题
+    document.documentElement.style.setProperty('--theme-color', '#d4af37');
+    document.documentElement.style.setProperty('--theme-rgb', '212, 175, 55');
+
+    // Loading 占位
+    container.innerHTML = `
+        <div class="p-8 md:p-16 w-full h-full animate-reveal overflow-y-auto">
+            <h1 class="text-4xl font-black font-luxury text-[#d4af37] tracking-widest mb-2">CHEER RANKING</h1>
+            <p class="text-zinc-500 text-xs font-luxury tracking-[0.3em] uppercase mb-10">助威榜 · Loading...</p>
+        </div>
+    `;
+
+    // 从 Supabase 拉全部球队，按票数降序
+    const { data, error } = await supabase
+        .from('teams')
+        .select('id, name, votes')
+        .order('votes', { ascending: false });
+
+    if (error) {
+        console.error('助威榜加载失败:', error);
+        container.innerHTML = `<div class="full-center-wrapper text-red-500">助威榜加载失败，请稍后再试。</div>`;
+        return;
+    }
+
+    // 隐藏 0 票
+    const ranked = data.filter(t => t.votes > 0);
+
+    if (ranked.length === 0) {
+        container.innerHTML = `
+            <div class="p-8 md:p-16 w-full h-full animate-reveal">
+                <h1 class="text-4xl font-black font-luxury text-[#d4af37] tracking-widest mb-2">CHEER RANKING</h1>
+                <p class="text-zinc-500 text-xs font-luxury tracking-[0.3em] uppercase mb-10">助威榜 · 按票数排行</p>
+                <div class="text-zinc-600 italic text-center mt-20">还没有任何球队收到助威</div>
+            </div>
+        `;
+        return;
+    }
+
+    const maxVotes = ranked[0].votes;
+
+    // 球队 id → 所属联赛 id
+    function findLeagueByTeamId(teamId) {
+        for (const [leagueId, teams] of Object.entries(archiveData.teamsData)) {
+            if (teams.some(t => String(t.id) === String(teamId))) return leagueId;
+        }
+        return null;
+    }
+
+    // 联赛 id → 颜色
+    const leagueColor = {};
+    archiveData.leagues.forEach(l => { leagueColor[l.id] = l.color; });
+
+    const rows = ranked.map((team, index) => {
+        const leagueId = findLeagueByTeamId(team.id);
+        const color = leagueColor[leagueId] || '#888';
+        const rank = index + 1;
+        const rankClass = rank <= 3 ? ` rank-${rank}` : '';
+        const pct = (team.votes / maxVotes) * 100;
+
+        return `
+            <div class="lb-row" onclick="renderTeam('${leagueId}', ${team.id})">
+                <span class="lb-rank${rankClass}">${rank}</span>
+                <span class="lb-name">${team.name}</span>
+                <div class="lb-bar-wrap">
+                    <div class="lb-bar" style="width:${pct}%; background:${color};"></div>
+                </div>
+                <span class="lb-votes">${team.votes}</span>
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = `
+        <div class="p-8 md:p-16 w-full h-full animate-reveal overflow-y-auto">
+            <h1 class="text-4xl font-black font-luxury text-[#d4af37] tracking-widest mb-2">CHEER RANKING</h1>
+            <p class="text-zinc-500 text-xs font-luxury tracking-[0.3em] uppercase mb-10">助威榜 · 按票数排行</p>
+            <div class="max-w-4xl mx-auto">
+                ${rows}
+            </div>
+        </div>
+    `;
 }
 
 // 侧边栏切换
@@ -263,6 +549,139 @@ function toggleSidebar() {
     document.getElementById('collapse-text').innerText = isClosed ? "Open" : "Close";
     document.getElementById('open-btn').classList.toggle('hidden', !isClosed);
 }
+
+
+// ===== 加油助威功能（每日 N 票） =====
+
+const DAILY_VOTES = 20;
+const VOTE_STATE_KEY = 'daily_vote_state';
+
+// 取今天的日期字符串（本地时区）
+function getTodayStr() {
+    return new Date().toDateString();
+}
+
+// 读取今日投票状态，跨天自动重置
+function getDailyState() {
+    let state = null;
+    try {
+        state = JSON.parse(localStorage.getItem(VOTE_STATE_KEY));
+    } catch (e) {}
+    if (!state || state.date !== getTodayStr()) {
+        state = { date: getTodayStr(), remaining: DAILY_VOTES };
+        localStorage.setItem(VOTE_STATE_KEY, JSON.stringify(state));
+    }
+    return state;
+}
+
+function setDailyState(state) {
+    localStorage.setItem(VOTE_STATE_KEY, JSON.stringify(state));
+}
+
+// Toast 提示
+let toastTimer = null;
+function showToast(message) {
+    let toast = document.getElementById('cheer-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'cheer-toast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+// 更新圆形按钮下方的剩余票数提示
+function updateHint() {
+    const hint = document.querySelector('.cheer-hint');
+    if (!hint) return;
+    const state = getDailyState();
+    if (state.remaining > 0) {
+        hint.textContent = `今日剩余 ${state.remaining} 票`;
+    } else {
+        hint.textContent = '今日票数已用完';
+    }
+}
+
+// 加载某球队的票数
+async function loadVote(teamId) {
+    const countEl = document.getElementById(`cheer-count-${teamId}`);
+    if (!countEl) return;
+
+    const { data, error } = await supabase
+        .from('teams')
+        .select('votes')
+        .eq('id', String(teamId))
+        .single();
+
+    if (error) {
+        console.error('加载票数失败:', error);
+        countEl.textContent = '—';
+        return;
+    }
+
+    countEl.textContent = data.votes;
+    updateHint();
+}
+
+// 投票
+// 防止并发投票的锁（按球队 id 分开）
+const votingLocks = new Set();
+
+async function castVote(teamId, btn) {
+    // ① 锁：同一球队正在请求中，直接忽略
+    if (votingLocks.has(teamId)) return;
+
+    const state = getDailyState();
+    if (state.remaining <= 0) {
+        showToast('今日票数已用完，明天再来');
+        return;
+    }
+
+    // ② 立刻加锁 + 立刻扣本地票数（在 await 之前完成，保证原子）
+    votingLocks.add(teamId);
+    state.remaining -= 1;
+    setDailyState(state);
+    updateHint();
+
+    btn.disabled = true;
+    const { data, error } = await supabase.rpc('vote_for_team', {
+        team_id_input: String(teamId)
+    });
+
+    if (error) {
+        // ③ 请求失败，回滚本地票数
+        console.error('投票失败:', error);
+        const s = getDailyState();
+        s.remaining += 1;
+        setDailyState(s);
+        updateHint();
+        showToast('投票失败，请稍后再试');
+    } else {
+        const countEl = document.getElementById(`cheer-count-${teamId}`);
+        if (countEl) countEl.textContent = data;
+
+        if (state.remaining > 0) {
+            showToast(`投票成功！今日还剩 ${state.remaining} 票`);
+        } else {
+            showToast('投票成功！今日票数已用完');
+        }
+    }
+
+    btn.disabled = false;
+    votingLocks.delete(teamId);
+}
+
+// 挂到 window，供 HTML 内 onclick 调用
+window.renderHome = renderHome;
+window.renderLeague = renderLeague;
+window.renderTeam = renderTeam;
+window.toggleSidebar = toggleSidebar;
+window.castVote = castVote;
+window.renderLeaderboard = renderLeaderboard;
 
 // 启动
 init();
